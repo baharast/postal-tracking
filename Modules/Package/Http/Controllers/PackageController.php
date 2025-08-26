@@ -1,56 +1,96 @@
 <?php
 
-namespace Modules\Package\Http\Controllers;
+namespace Modules\Packages\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Str;
+use Modules\Package\Http\Requests\StoreRequest;
+use Modules\Package\Models\Package;
 
 class PackageController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('package::index');
+        $currentUser = $request->user();
+        $query = Package::query();
+
+        if ($currentUser->role->name === 'sender') {
+            $query->where('sender_id', $currentUser->id);
+        }
+
+        $packages = $query->orderByDesc('created_at')->paginate($request->integer('per_page', 15));
+
+        return api_success($packages->items(), ['pagination' => [
+            'current_page'  => $packages->currentPage(),
+            'per_page'      => $packages->perPage(),
+            'total'         => $packages->total()
+        ]]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(StoreRequest $request)
     {
-        return view('package::create');
+        $this->authorize('create', Package::class);
+
+        $package = Package::create([
+            'id'                    => (string) Str::uuid(),
+            'sender_id'             => $request->user()->id,
+            'tracking_code'         => (string) Str::uuid(),
+            'origin_city'           => $request->safe()->origin_city,
+            'origin_address'        => $request->safe()->origin_address,
+            'destination_city'      => $request->safe()->destination_city,
+            'destination_address'   => $request->safe()->destination_address,
+            'weight_grams'          => $request->safe()->weight_grams,
+        ]);
+
+        return api_success($package, null, 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request) {}
-
-    /**
-     * Show the specified resource.
-     */
-    public function show($id)
+    public function show(Package $package)
     {
-        return view('package::show');
+        $this->authorize('view', $package);
+        return api_success($package);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit($id)
+    public function markInTransit(Request $request, Package $package)
     {
-        return view('package::edit');
+        $this->authorize('markInTransit', $package);
+
+        if ($package->status !== 'created' || is_null($package->carrier_id)) {
+            return api_error('invalid_state', 'Package must be accepted by a carrier first.', 422);
+        }
+
+        $package->status = 'in_transit';
+        $package->save();
+
+        return api_success($package);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id) {}
+    public function markDelivered(Request $request, Package $package)
+    {
+        $this->authorize('markDelivered', $package);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy($id) {}
+        if ($package->status !== 'in_transit') {
+            return api_error('invalid_state', 'Package is not in transit.', 422);
+        }
+
+        $package->status = 'delivered';
+        $package->save();
+
+        return api_success($package);
+    }
+
+    public function cancel(Request $request, Package $package)
+    {
+        $this->authorize('cancel', $package);
+
+        if ($package->status !== 'created') {
+            return api_error('invalid_state', 'Only packages in created state can be cancelled.', 422);
+        }
+
+        $package->status = 'cancelled';
+        $package->save();
+
+        return api_success($package);
+    }
 }

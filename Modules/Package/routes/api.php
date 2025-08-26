@@ -1,8 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Package\Http\Controllers\PackageController;
+use Modules\Packages\Http\Controllers\PackageController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('packages', PackageController::class)->names('package');
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    Route::get('packages', [PackageController::class, 'index']);
+    Route::post('packages', [PackageController::class, 'store']);
+    Route::get('packages/{package}', [PackageController::class, 'show']);
+
+    Route::post('packages/{package}/status/in-transit', [PackageController::class, 'markInTransit']);
+    Route::post('packages/{package}/status/delivered', [PackageController::class, 'markDelivered']);
+    Route::post('packages/{package}/status/cancel', [PackageController::class, 'cancel']);
 });

@@ -5,6 +5,7 @@
     "keywords": [],
     "priority": 0,
     "providers": [
+        "Modules\\Package\\Providers\\AuthServiceProvider",
         "Modules\\Package\\Providers\\PackageServiceProvider"
     ],
     "files": []
