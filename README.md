@@ -38,7 +38,7 @@ Supports **multi-role authentication** (Sender, Carrier, Admin), package lifecyc
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/your-username/postal-tracking.git
+git clone https://github.com/baharast/postal-tracking.git
 cd postal-tracking
 ```
 
