@@ -1,0 +1,11 @@
+{
+    "name": "ShipmentRequest",
+    "alias": "shipmentrequest",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ShipmentRequest\\Providers\\ShipmentRequestServiceProvider"
+    ],
+    "files": []
+}
