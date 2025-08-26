@@ -15,8 +15,9 @@ return new class extends Migration
         Schema::create('packages', function (Blueprint $table) {
             $table->uuid('id')->primary();
 
-            $table->uuid('sender_id');
-            $table->uuid('carrier_id')->nullable();
+            $table->foreignUuid('sender_id')->constrained('users');
+            $table->foreignUuid('carrier_id')->nullable()->constrained('users');
+
             $table->uuid('tracking_code')->unique();
             $table->enum('status', PackageStatus::values())->default(PackageStatus::CREATED->value);
             $table->string('origin_city');
@@ -24,11 +25,9 @@ return new class extends Migration
             $table->string('destination_city');
             $table->string('destination_address');
             $table->unsignedInteger('weight_grams')->default(0);
+
             $table->timestamps();
             $table->softDeletes();
-
-            $table->foreign('sender_id')->references('id')->on('users');
-            $table->foreign('carrier_id')->references('id')->on('users');
         });
     }
 

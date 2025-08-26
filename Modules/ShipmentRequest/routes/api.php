@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\ShipmentRequests\Http\Controllers\ShipmentRequestController;
+use Modules\ShipmentRequest\Http\Controllers\ShipmentRequestController;
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('requests', [ShipmentRequestController::class, 'index']);

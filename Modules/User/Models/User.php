@@ -15,7 +15,7 @@ class User extends Authenticatable
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['name', 'email', 'role_id'];
+    protected $fillable = ['id', 'name', 'email', 'role_id'];
 
     public function role()
     {

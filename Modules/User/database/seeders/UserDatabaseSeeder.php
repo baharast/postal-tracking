@@ -30,7 +30,7 @@ class UserDatabaseSeeder extends Seeder
         ]);
 
         User::create([
-            'id'        => Str::uuid(),
+            'id'        => (string) Str::uuid(),
             'name'      => 'Admin User',
             'email'     => 'admin@postal.local',
             'role_id'   => $adminRole->id

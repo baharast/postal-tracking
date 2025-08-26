@@ -14,15 +14,14 @@ return new class extends Migration
     {
         Schema::create('shipment_requests', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('package_id');
-            $table->uuid('carrier_id');
+            $table->foreignUuid('package_id')->constrained('packages');
+            $table->foreignUuid('carrier_id')->constrained('users');
+
             $table->enum('status', ShipmentRequestStatus::values())->default(ShipmentRequestStatus::PENDING->value);
             $table->string('reject_reason')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('package_id')->references('id')->on('packages');
-            $table->foreign('carrier_id')->references('id')->on('users');
             $table->unique(['package_id', 'carrier_id']);
         });
     }
