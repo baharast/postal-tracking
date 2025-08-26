@@ -1,21 +1,20 @@
 <?php
 
-namespace Modules\Package\Providers;
+namespace Modules\ShipmentRequest\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
-use Modules\Package\Providers\AuthServiceProvider;
 use Nwidart\Modules\Traits\PathNamespace;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class PackageServiceProvider extends ServiceProvider
+class ShipmentRequestServiceProvider extends ServiceProvider
 {
     use PathNamespace;
 
-    protected string $name = 'Package';
+    protected string $name = 'ShipmentRequest';
 
-    protected string $nameLower = 'package';
+    protected string $nameLower = 'shipmentrequest';
 
     /**
      * Boot the application events.
@@ -35,7 +34,6 @@ class PackageServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->register(AuthServiceProvider::class);
         $this->app->register(EventServiceProvider::class);
         $this->app->register(RouteServiceProvider::class);
     }

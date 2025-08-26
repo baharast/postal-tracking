@@ -1,4 +1,5 @@
 {
     "User": true,
-    "Package": true
+    "Package": true,
+    "ShipmentRequest": true
 }
