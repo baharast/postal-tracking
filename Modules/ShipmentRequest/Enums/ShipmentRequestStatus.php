@@ -27,7 +27,7 @@ enum ShipmentRequestStatus: string
             'translate' => __('shipment_request::shipment_request.pending'),
             'icon'      => 'bi bi-hourglass-split',
             'color'     => 'badge badge-light-info',
-            'route'     => 'packages.pending'
+            'route'     => 'shipment_request.pending'
         ];
     }
 
@@ -37,7 +37,7 @@ enum ShipmentRequestStatus: string
             'translate' => __('shipment_request::shipment_request.accepted'),
             'icon'      => 'bi bi-check-circle-fill',
             'color'     => 'badge badge-light-success',
-            'route'     => 'packages.accept'
+            'route'     => 'shipment_request.accept'
         ];
     }
 
@@ -47,7 +47,7 @@ enum ShipmentRequestStatus: string
             'translate' => __('shipment_request::shipment_request.rejected'),
             'icon'      => 'bi bi-x-circle-fill',
             'color'     => 'badge badge-light-danger',
-            'route'     => 'packages.reject'
+            'route'     => 'shipment_request.reject'
         ];
     }
 }
