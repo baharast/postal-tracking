@@ -1,8 +1,10 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\ShipmentRequest\Http\Controllers\ShipmentRequestController;
+use Modules\ShipmentRequests\Http\Controllers\ShipmentRequestController;
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
-    Route::apiResource('shipmentrequests', ShipmentRequestController::class)->names('shipmentrequest');
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
+    Route::get('requests', [ShipmentRequestController::class, 'index']);
+    Route::post('packages/{package}/requests', [ShipmentRequestController::class, 'store']);
+    Route::post('requests/{request}/approve', [ShipmentRequestController::class, 'approve']);
 });

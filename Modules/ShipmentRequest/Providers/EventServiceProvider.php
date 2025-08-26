@@ -3,6 +3,8 @@
 namespace Modules\ShipmentRequest\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\ShipmentRequest\Events\ShipmentRequestAccepted;
+use Modules\ShipmentRequest\Listeners\RejectOtherRequestsOnAccept;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -11,7 +13,9 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
-    protected $listen = [];
+    protected $listen = [
+        ShipmentRequestAccepted::class => [RejectOtherRequestsOnAccept::class],
+    ];
 
     /**
      * Indicates if events should be discovered.

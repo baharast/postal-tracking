@@ -5,6 +5,7 @@
     "keywords": [],
     "priority": 0,
     "providers": [
+        "Modules\\ShipmentRequest\\Providers\\EventServiceProvider",
         "Modules\\ShipmentRequest\\Providers\\ShipmentRequestServiceProvider"
     ],
     "files": []
