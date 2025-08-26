@@ -8,7 +8,9 @@ use Modules\Package\Policies\PackagePolicy;
 
 class AuthServiceProvider extends ServiceProvider
 {
-    protected $policies = [Package::class => PackagePolicy::class];
+    protected $policies = [
+        Package::class => PackagePolicy::class,
+    ];
     public function boot(): void
     {
         $this->registerPolicies();

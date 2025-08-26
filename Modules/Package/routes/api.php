@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Packages\Http\Controllers\PackageController;
+use Modules\Package\Http\Controllers\PackageController;
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::get('packages', [PackageController::class, 'index']);
