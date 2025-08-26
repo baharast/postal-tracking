@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Packages\Providers;
+namespace Modules\Package\Providers;
 
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Modules\Package\Models\Package;
