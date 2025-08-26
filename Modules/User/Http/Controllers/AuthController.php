@@ -2,8 +2,8 @@
 
 namespace Modules\Users\Http\Controllers;
 
-use Illuminate\Routing\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 use Modules\User\Http\Requests\LoginRequest;
 use Modules\User\Models\User;
@@ -13,25 +13,27 @@ class AuthController extends Controller
     public function login(LoginRequest $request)
     {
 
-        $user = User::with('role')->where('email', $request->email)->first();
-        if (!$user || $user->role->name !== $request->role) {
-            return resp(null, null, err('invalid_credentials', 'Email/Role mismatch'), 401);
+        $user = User::with('role')->where('email', $request->safe()->email)->first();
+        if (!$user || $user->role->name !== $request->safe()->role) {
+            return api_error('invalid_credentials', 'Email and role do not match.', 401);
         }
-        $role = $user->role;
-        if (!Hash::check($request->password, $role->password)) {
-            return resp(null, null, err('invalid_credentials', 'Wrong role password'), 401);
+
+        if (!Hash::check($request['password'], $user->role->password)) {
+            return api_error('invalid_credentials', 'Incorrect role password.', 401);
         }
-        $token = $user->createToken("api")->plainTextToken;
-        return resp(['token' => $token], null);
+
+        $token = $user->createToken('api')->plainTextToken;
+        return api_success(['token' => $token]);
     }
 
-    public function me(Request $request)
+    public function getAuthenticatedUser(Request $request)
     {
-        return resp($request->user());
+        return api_success($request->user()->load('role'));
     }
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
-        return resp(['message' => 'logged_out']);
+        return api_success(['message' => 'Logged out successfully']);
     }
 }
