@@ -88,14 +88,6 @@ php artisan l5-swagger:generate
 ```
 Then open [http://localhost:8000/api/documentation](http://localhost:8000/api/documentation)
 
-### Docsify (static docs)
-Run docsify locally:
-```bash
-npm install -g docsify-cli
-docsify serve docs
-```
-Docs will be available at [http://localhost:3000](http://localhost:3000)
-
 ---
 
 ## 🧪 Running Tests
